@@ -13,7 +13,7 @@ class User(models.Model):
     email = models.EmailField('Почта', unique=True)
     date_joined = models.DateTimeField('Дата регистрации', auto_now_add=True)
     password = models.CharField('Хэш пароля', max_length=128)
-    token = models.CharField('Токен', max_length=10)
+    token = models.CharField('Токен', max_length=10, editable=False)
 
     def save(self, *args, **kwargs):
         if is_password_usable(self.password):
