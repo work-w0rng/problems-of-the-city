@@ -1,5 +1,6 @@
 from . import router
 
-@router.post('/register')
+
+@router.post('/register/')
 def create(request):
     pass
