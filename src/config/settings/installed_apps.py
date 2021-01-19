@@ -8,9 +8,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'ninja',
 ]
 
-LOCAL_APPS = []
+LOCAL_APPS = [
+    'apps.users'
+]
 
 INSTALLED_APPS += LOCAL_APPS
 
