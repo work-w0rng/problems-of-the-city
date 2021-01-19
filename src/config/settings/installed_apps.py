@@ -25,8 +25,3 @@ MIGRATION_MODULES = {
     app_name: f'{MIGRATION_PATH}.{app_name}'
     for app_name in LOCAL_APPS_NAME
 }
-
-for app in LOCAL_APPS_NAME:
-    if not path.exists(f'config/migrations/{app}'):
-        mkdir(f'config/migrations/{app}')
-        open(f'config/migrations/{app}/__init__.py', 'w+').close()
