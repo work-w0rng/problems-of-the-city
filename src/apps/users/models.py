@@ -4,6 +4,7 @@ from django.contrib.auth.hashers import (
     check_password, make_password, is_password_usable
 )
 from string import ascii_letters, digits
+from django.contrib.auth.password_validation import validate_password
 
 
 class User(models.Model):
@@ -16,6 +17,7 @@ class User(models.Model):
 
     def save(self, *args, **kwargs):
         if is_password_usable(self.password):
+            validate_password(self.password)
             self.password = make_password(self.password)
             self.token = get_random_string(
                 length=10, 
