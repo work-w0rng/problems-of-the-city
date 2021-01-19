@@ -52,21 +52,17 @@ def login(request):
     '/reset_password/',
     response={
         200: schemas.Token,
-        401: schemas.Error,
         402: List[schemas.Error]
-    }
+    },
+    auth=AuthWithEmailAndPassword()
 )
-def reset_password(request, user: schemas.ResetPassword):
-    user_ = models.User.objects.filter(email=user.email).first()
-    if not user_ or not user_.check_password(user.old_password):
-        return 401, {'message': 'Введите правильную почту или пароль'}
-    if user.old_password == user.new_password:
-        return 401, {'message': 'Новый пароль не должен совпадать со старым'}
+def reset_password(request, reset_password: schemas.ResetPassword):
+    user = request.auth
     
-    user_.password = user.new_password
+    user.password = reset_password.new_password
     try:
-        user_.save()
+        user.save()
     except ValidationError as error:
         return 402, [{'message': message} for message in error.messages]
 
-    return 200, {'token': user_.token}
+    return 200, {'token': user.token}

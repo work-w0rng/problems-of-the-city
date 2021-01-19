@@ -22,6 +22,4 @@ class Login(Schema):
 
 
 class ResetPassword(Schema):
-    email: str
-    old_password: str
     new_password: str
