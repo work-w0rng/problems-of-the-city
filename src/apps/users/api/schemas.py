@@ -19,3 +19,9 @@ class Error(Schema):
 class Login(Schema):
     email: str
     password: str
+
+
+class ResetPassword(Schema):
+    email: str
+    old_password: str
+    new_password: str
