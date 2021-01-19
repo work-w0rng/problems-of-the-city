@@ -1,7 +1,7 @@
 from pathlib import Path
 from sys import argv
 from os import path
-from .env import env
+from . import env
 
 
 ##################################################################
@@ -9,17 +9,17 @@ from .env import env
 ##################################################################
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-SECRET_KEY = env.str('SECRET_KEY', default='secret_key')
+SECRET_KEY = env.SECRET_KEY
 ROOT_URLCONF = 'config.urls'
 WSGI_APPLICATION = 'config.wsgi.application'
 ALLOWED_HOSTS = ['*']
-ADMIN_URL = env.str('ADMIN_URL', default='admin/')
+ADMIN_URL = env.ADMIN_URL
 
 ##################################################################
 # Настройки Debug
 ##################################################################
 
-DEBUG = env.bool('DEBUG', default=False)
+DEBUG = env.DEBUG
 TEMPLATE_DEBUG = DEBUG
 
 ##################################################################
@@ -45,6 +45,7 @@ if len(argv) > 1 and argv[1] == 'test':
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -95,6 +96,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 STATIC_URL = '/static/'
 STATIC_ROOT = path.join(BASE_DIR, 'static')
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = path.join(BASE_DIR, 'media')
