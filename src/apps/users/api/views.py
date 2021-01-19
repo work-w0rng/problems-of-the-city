@@ -40,9 +40,7 @@ def register(request, user: schemas.Registration):
 )
 def login(request, user: schemas.Login):
     user_ = models.User.objects.filter(email=user.email).first()
-    if not user_:
-        return 401, {'message': 'Введите правильную почту или пароль'}
-    if not user_.check_password(user.password):
+    if not user_ or not user_.check_password(user.password):
         return 401, {'message': 'Введите правильную почту или пароль'}
     
     return 200, {'token': user_.token}
@@ -58,9 +56,7 @@ def login(request, user: schemas.Login):
 )
 def reset_password(request, user: schemas.ResetPassword):
     user_ = models.User.objects.filter(email=user.email).first()
-    if not user_:
-        return 401, {'message': 'Введите правильную почту или пароль'}
-    if not user_.check_password(user.old_password):
+    if not user_ or not user_.check_password(user.old_password):
         return 401, {'message': 'Введите правильную почту или пароль'}
     if user.old_password == user.new_password:
         return 401, {'message': 'Новый пароль не должен совпадать со старым'}
