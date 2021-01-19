@@ -1,12 +1,15 @@
 from . import router, schemas
 from .. import models
+from django.core.exceptions import ValidationError
+from typing import List
 
 
 @router.post(
     '/register/', 
     response={
         200: schemas.Token, 
-        401: schemas.Error,
+        401: schemas.Error, 
+        402: List[schemas.Error]
     }
 )
 def create(request, user: schemas.User):
@@ -20,5 +23,10 @@ def create(request, user: schemas.User):
         email=user.email,
         password=user.password,
     )
+
+    try:
+        user.save()
+    except ValidationError as error:
+        return 402, [{'message': message} for message in error.messages]
 
     return 200, {'token': user.token}
