@@ -5,4 +5,4 @@ api = NinjaAPI(
     docs_url='/docs/'
 )
 
-api.add_router("/api/users/v1/", users_router)
+api.add_router("/api/v1/user/", users_router)

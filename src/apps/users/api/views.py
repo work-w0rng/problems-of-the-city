@@ -13,7 +13,7 @@ class AuthWithEmailAndPassword(HttpBasicAuth):
 
 
 @router.post(
-    '/register/', 
+    '/', 
     response={
         200: schemas.Token, 
         401: schemas.Error, 
@@ -40,7 +40,7 @@ def register(request, user: schemas.Registration):
 
 
 @router.get(
-    '/login/',
+    '/',
     response=schemas.Token,
     auth=AuthWithEmailAndPassword()
 )
@@ -49,7 +49,7 @@ def login(request):
 
 
 @router.put(
-    '/reset_password/',
+    '/',
     response={
         200: schemas.Token,
         402: List[schemas.Error]
