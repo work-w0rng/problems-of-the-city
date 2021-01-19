@@ -6,3 +6,7 @@ class User(Schema):
     address: str = None
     email: str
     password: str
+
+
+class Token(Schema):
+    token: str
