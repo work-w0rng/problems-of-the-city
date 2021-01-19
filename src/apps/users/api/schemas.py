@@ -1,7 +1,7 @@
 from ninja import Schema
 
 
-class User(Schema):
+class Registration(Schema):
     full_name: str
     address: str = None
     email: str

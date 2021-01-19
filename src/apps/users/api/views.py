@@ -12,7 +12,7 @@ from typing import List
         402: List[schemas.Error]
     }
 )
-def create(request, user: schemas.User):
+def create(request, user: schemas.Registration):
 
     if models.User.objects.filter(email=user.email):
         return 401, {'message': 'Данный email уже занят'}
