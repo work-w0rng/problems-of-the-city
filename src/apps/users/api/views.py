@@ -41,17 +41,11 @@ def register(request, user: schemas.Registration):
 
 @router.get(
     '/login/',
-    response={
-        200: schemas.Token,
-        401: schemas.Error
-    }
+    response=schemas.Token,
+    auth=AuthWithEmailAndPassword()
 )
-def login(request, user: schemas.Login):
-    user_ = models.User.objects.filter(email=user.email).first()
-    if not user_ or not user_.check_password(user.password):
-        return 401, {'message': 'Введите правильную почту или пароль'}
-    
-    return 200, {'token': user_.token}
+def login(request):
+    return 200, {'token': request.auth.token}
 
 
 @router.put(
