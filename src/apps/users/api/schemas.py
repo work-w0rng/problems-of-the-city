@@ -14,3 +14,8 @@ class Token(Schema):
 
 class Error(Schema):
     message: str
+
+
+class Login(Schema):
+    email: str
+    password: str
