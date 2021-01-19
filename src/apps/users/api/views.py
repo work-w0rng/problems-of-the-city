@@ -2,6 +2,14 @@ from . import router, schemas
 from .. import models
 from django.core.exceptions import ValidationError
 from typing import List
+from ninja.security import HttpBasicAuth
+
+
+class AuthWithEmailAndPassword(HttpBasicAuth):
+    def authenticate(self, request, username, password):
+        user = models.User.objects.filter(email=username).first()
+        if user and user.check_password(password):
+            return user
 
 
 @router.post(
