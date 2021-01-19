@@ -10,3 +10,7 @@ class User(Schema):
 
 class Token(Schema):
     token: str
+
+
+class Error(Schema):
+    message: str
