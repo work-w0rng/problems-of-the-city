@@ -7,7 +7,7 @@ from .api import api
 from ninja.openapi.urls import get_openapi_urls
 
 
-admin.site.site_header = 'new Project'
+admin.site.site_header = 'Помощьник гражданина'
 
 
 

@@ -4,4 +4,5 @@ from .models import User
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
-    readonly_fields=('password', 'date_joined')
+    list_display = ('id', 'full_name', 'date_joined')
+    readonly_fields = ('password', 'date_joined')

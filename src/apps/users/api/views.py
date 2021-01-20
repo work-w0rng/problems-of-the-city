@@ -18,7 +18,10 @@ class AuthWithEmailAndPassword(HttpBasicAuth):
         200: schemas.Token, 
         401: schemas.Error, 
         402: List[schemas.Error]
-    }
+    },
+    tags=['Работа с пользователем'],
+    summary='Регистрация',
+    operation_id='register'
 )
 def register(request, user: schemas.Registration):
     if models.User.objects.filter(email=user.email):
@@ -42,7 +45,10 @@ def register(request, user: schemas.Registration):
 @router.get(
     '/',
     response=schemas.Token,
-    auth=AuthWithEmailAndPassword()
+    auth=AuthWithEmailAndPassword(),
+    tags=['Работа с пользователем'],
+    summary='Авторизация',
+    operation_id='login'
 )
 def login(request):
     return 200, {'token': request.auth.token}
@@ -54,7 +60,10 @@ def login(request):
         200: schemas.Token,
         402: List[schemas.Error]
     },
-    auth=AuthWithEmailAndPassword()
+    auth=AuthWithEmailAndPassword(),
+    tags=['Работа с пользователем'],
+    summary='Смена пароля',
+    operation_id='reset_password'
 )
 def reset_password(request, reset_password: schemas.ResetPassword):
     user = request.auth
