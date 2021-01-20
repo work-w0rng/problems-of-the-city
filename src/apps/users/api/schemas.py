@@ -1,4 +1,5 @@
 from ninja import Schema
+from typing import List
 
 
 class Registration(Schema):
@@ -13,7 +14,16 @@ class Token(Schema):
 
 
 class Error(Schema):
-    message: str
+    """
+    **email_already_use**: на данную почту уже зарегистрирован аккаунт;
+
+    **password_too_short**: введенный пароль сильно короткий;
+
+    **password_entirely_numeric**: пароль состоит только из цифр;
+    
+    **invalid_email**: введен некорректный email
+    """
+    codes: List[str]
 
 
 class Login(Schema):
