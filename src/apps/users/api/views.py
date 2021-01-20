@@ -16,8 +16,7 @@ class AuthWithEmailAndPassword(HttpBasicAuth):
     '/', 
     response={
         200: schemas.Token, 
-        401: schemas.Error, 
-        402: List[schemas.Error]
+        400: schemas.Error,
     },
     tags=['Работа с пользователем'],
     summary='Регистрация',
@@ -38,8 +37,9 @@ def register(request, user: schemas.Registration):
         - иметь минимум 8 символов;
         - состоять из цифр и букв.
     """
+    errors = []
     if models.User.objects.filter(email=user.email):
-        return 401, {'message': 'Данный email уже занят'}
+        errors.append('email_already_use')
 
     user = models.User(
         full_name=user.full_name,
@@ -51,7 +51,11 @@ def register(request, user: schemas.Registration):
     try:
         user.save()
     except ValidationError as error:
-        return 402, [{'message': message} for message in error.messages]
+        for e in error:
+            errors.append(e)
+
+    if errors:
+        return 400, {'codes': errors}
 
     return 200, {'token': user.token}
 
@@ -72,7 +76,7 @@ def login(request):
     '/',
     response={
         200: schemas.Token,
-        402: List[schemas.Error]
+        400: schemas.Error
     },
     auth=AuthWithEmailAndPassword(),
     tags=['Работа с пользователем'],
@@ -86,6 +90,6 @@ def reset_password(request, reset_password: schemas.ResetPassword):
     try:
         user.save()
     except ValidationError as error:
-        return 402, [{'message': message} for message in error.messages]
+        return 400, {'codes': [e for e in error]}
 
     return 200, {'token': user.token}

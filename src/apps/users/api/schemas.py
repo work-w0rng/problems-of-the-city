@@ -22,6 +22,8 @@ class Error(Schema):
     **password_entirely_numeric**: пароль состоит только из цифр;
     
     **invalid_email**: введен некорректный email
+
+    **invalid_full_name**: неправильный формат ФИО
     """
     codes: List[str]
 
