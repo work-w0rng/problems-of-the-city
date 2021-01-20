@@ -4,9 +4,7 @@ from django.contrib.auth.hashers import (
     check_password, make_password, is_password_usable
 )
 from string import ascii_letters, digits
-from django.contrib.auth.password_validation import validate_password
-from django.core.validators import validate_email
-from .services.validators import validate_full_name
+from .services.validators import validate_full_name, validate_email, validate_password
 from .services.utils import convert_full_name
 
 
