@@ -2,6 +2,7 @@ from pathlib import Path
 from sys import argv
 from os import path
 from . import env
+import django_heroku
 
 
 ##################################################################
@@ -100,3 +101,9 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = path.join(BASE_DIR, 'media')
+
+##################################################################
+# Настройки для heroku
+##################################################################
+
+django_heroku.settings(locals())
