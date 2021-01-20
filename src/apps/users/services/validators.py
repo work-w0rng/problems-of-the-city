@@ -1,6 +1,7 @@
 from django.utils.regex_helper import _lazy_re_compile
 from django.core.exceptions import ValidationError
 from django.contrib.auth.password_validation import get_default_password_validators
+from django.core.validators import EmailValidator
 
 
 class FullNameValidator:
@@ -33,3 +34,4 @@ def validate_password(password):
 
 
 validate_full_name = FullNameValidator()
+validate_email = EmailValidator(code='invalid_email')
