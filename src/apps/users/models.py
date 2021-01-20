@@ -6,6 +6,8 @@ from django.contrib.auth.hashers import (
 from string import ascii_letters, digits
 from django.contrib.auth.password_validation import validate_password
 from django.core.validators import validate_email
+from .services.validators import validate_full_name
+from .services.utils import convert_full_name
 
 
 class User(models.Model):
@@ -20,6 +22,9 @@ class User(models.Model):
         if is_password_usable(self.password):
             validate_password(self.password)
             validate_email(self.email)
+            validate_full_name(self.full_name)
+
+            self.full_name = convert_full_name(self.full_name)
             self.password = make_password(self.password)
             self.token = get_random_string(
                 length=10, 
