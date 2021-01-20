@@ -24,6 +24,20 @@ class AuthWithEmailAndPassword(HttpBasicAuth):
     operation_id='register'
 )
 def register(request, user: schemas.Registration):
+    """
+    Регистрация нового пользователя пользователя.
+
+    Поле **full_name** должно иметь формат *Фамилия Имя Отчество* или *Фамилия Имя*.
+
+    Поле **address** не является обязательным.
+
+    Поле **email** должно иметь корректный email.
+
+    Пароль, содержащийся в поле **password** должен соотсветсвовать требованиям безопастности:
+
+        - иметь минимум 8 символов;
+        - состоять из цифр и букв.
+    """
     if models.User.objects.filter(email=user.email):
         return 401, {'message': 'Данный email уже занят'}
 
