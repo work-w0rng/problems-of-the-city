@@ -18,9 +18,8 @@ class User(models.Model):
 
     def save(self, *args, **kwargs):
         if is_password_usable(self.password):
-            validate_password(self.password)
-            validate_email(self.email)
-            validate_full_name(self.full_name)
+            self.clean_data()
+            self.validate_data()
 
             self.full_name = convert_full_name(self.full_name)
             self.password = make_password(self.password)
@@ -35,6 +34,17 @@ class User(models.Model):
 
     def __str__(self):
         return self.full_name
+
+    def validate_data(self):
+        validate_password(self.password)
+        validate_email(self.email)
+        validate_full_name(self.full_name)
+
+    def clean_data(self):
+        self.email = self.email.strip()
+        self.password = self.password.strip()
+        self.full_name = self.full_name.strip()
+        self.address = self.address.strip()
 
     class Meta:
         verbose_name = 'Гражданин'
