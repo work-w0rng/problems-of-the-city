@@ -3,8 +3,7 @@ from django.urls import path
 from django.conf.urls.static import static
 from django.conf import settings
 
-from .api import api
-from ninja.openapi.urls import get_openapi_urls
+from apps.api import api
 
 
 admin.site.site_header = 'Помощьник гражданина'

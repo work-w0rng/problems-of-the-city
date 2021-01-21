@@ -1,5 +1,5 @@
 from ninja import NinjaAPI
-from apps.users.api import router as users_router
+from ..users.api import router as users_router
 
 api = NinjaAPI(
     docs_url='/docs/',
