@@ -1,15 +1,7 @@
 from . import router, schemas
 from .. import models
 from django.core.exceptions import ValidationError
-from typing import List
-from ninja.security import HttpBasicAuth
-
-
-class AuthWithEmailAndPassword(HttpBasicAuth):
-    def authenticate(self, request, username, password):
-        user = models.User.objects.filter(email=username).first()
-        if user and user.check_password(password):
-            return user
+from apps.api.authorizations import AuthWithEmailAndPassword, AuthWithToken
 
 
 @router.post(
@@ -37,9 +29,8 @@ def register(request, user: schemas.Registration):
         - иметь минимум 8 символов;
         - состоять из цифр и букв.
     """
-    errors = []
     if models.User.objects.filter(email=user.email):
-        errors.append('email_already_use')
+        return 400, {'codes': ['email_already_use']}
 
     user = models.User(
         full_name=user.full_name,
@@ -51,11 +42,7 @@ def register(request, user: schemas.Registration):
     try:
         user.save()
     except ValidationError as error:
-        for e in error:
-            errors.append(e)
-
-    if errors:
-        return 400, {'codes': errors}
+        return 400, {'codes': [e for e in error]}
 
     return 200, {'token': user.token}
 
@@ -78,14 +65,17 @@ def login(request):
         200: schemas.Token,
         400: schemas.Error
     },
-    auth=AuthWithEmailAndPassword(),
+    auth=AuthWithToken(),
     tags=['Работа с пользователем'],
     summary='Смена пароля',
     operation_id='reset_password'
 )
 def reset_password(request, reset_password: schemas.ResetPassword):
     user = request.auth
-    
+
+    if not user.check_password(reset_password.old_password):
+        return 400, {'codes': ['invalid_password']}
+
     user.password = reset_password.new_password
     try:
         user.save()
