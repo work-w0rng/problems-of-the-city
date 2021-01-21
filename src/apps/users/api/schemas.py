@@ -24,6 +24,8 @@ class Error(Schema):
     **invalid_email**: введен некорректный email
 
     **invalid_full_name**: неправильный формат ФИО
+
+    **invalid_password**: неправильный пароль
     """
     codes: List[str]
 
@@ -34,4 +36,5 @@ class Login(Schema):
 
 
 class ResetPassword(Schema):
+    old_password: str
     new_password: str
