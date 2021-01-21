@@ -44,7 +44,8 @@ class User(models.Model):
         self.email = self.email.strip()
         self.password = self.password.strip()
         self.full_name = self.full_name.strip()
-        self.address = self.address.strip()
+        if self.address:
+            self.address = self.address.strip()
 
     class Meta:
         verbose_name = 'Гражданин'
