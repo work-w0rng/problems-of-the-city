@@ -5,21 +5,24 @@ from django.core.validators import EmailValidator
 
 
 class FullNameValidator:
-    message = 'Введите ФИО в корректном формате'
-    code = 'invalid_full_name'
+    message = 'invalid_full_name'
     fio_regex = _lazy_re_compile(
         r"[a-zA-ZА-Яа-яЁё\-]{2,}( [a-zA-ZА-Яа-яЁё]{2,}){1,2}"
     )
 
-    def __init__(self, message=None, code=None):
+    short_fio_regex = _lazy_re_compile(
+        r"[a-zA-ZА-Яа-яЁё\-]{2,}( [a-zA-ZА-Яа-яЁё].){1,2}"
+    )
+
+    def __init__(self, message=None):
         if message is not None:
             self.message = message
-        if code is not None:
-            self.code = code
 
     def __call__(self, value):
-        if not self.fio_regex.match(value):
-            raise ValidationError(self.message, code=self.code)
+        if self.short_fio_regex.match(value):
+            return
+        elif not self.fio_regex.match(value):
+            raise ValidationError(self.message)
 
 
 def validate_password(password):
@@ -34,4 +37,4 @@ def validate_password(password):
 
 
 validate_full_name = FullNameValidator()
-validate_email = EmailValidator(code='invalid_email')
+validate_email = EmailValidator('invalid_email')
