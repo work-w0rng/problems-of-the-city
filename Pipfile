@@ -1,0 +1,18 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django = "==3.1.5"
+django-ninja = "==0.10.1"
+gunicorn = "==20.0.4"
+whitenoise = "==5.2.0"
+django-heroku = "==0.3.1"
+psycopg2-binary = "==2.8.6"
+
+[dev-packages]
+flake8 = "*"
+
+[requires]
+python_version = "3.8"
