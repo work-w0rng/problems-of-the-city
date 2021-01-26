@@ -2,10 +2,14 @@ from . import router, schemas
 from .. import models
 from django.core.exceptions import ValidationError
 from apps.api.authorizations import AuthWithEmailAndPassword, AuthWithToken
+import logging
+
+
+logging.basicConfig(level=logging.DEBUG)
 
 
 @router.post(
-    '/', 
+    '/',
     response={
         200: schemas.Token, 
         400: schemas.Error,
@@ -29,6 +33,7 @@ def register(request, user: schemas.Registration):
         - иметь минимум 8 символов;
         - состоять из цифр и букв.
     """
+    logging.info(f'Поступил запрос: {request._body}')
     if models.User.objects.filter(email=user.email):
         return 400, {'codes': ['email_already_use']}
 
@@ -56,6 +61,7 @@ def register(request, user: schemas.Registration):
     operation_id='login'
 )
 def login(request):
+    logging.info(f'Поступил запрос: {request._body}')
     return 200, {'token': request.auth.token}
 
 
@@ -71,6 +77,7 @@ def login(request):
     operation_id='reset_password'
 )
 def reset_password(request, reset_password: schemas.ResetPassword):
+    logging.info(f'Поступил запрос: {request._body}')
     user = request.auth
 
     if not user.check_password(reset_password.old_password):
