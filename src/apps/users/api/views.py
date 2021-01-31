@@ -31,7 +31,7 @@ def register(request, user: schemas.Registration):
     Пароль, содержащийся в поле **password** должен соответствовать требованиям безопастности:
 
         - иметь минимум 8 символов;
-        - состоять из цифр и букв.
+        - состоять не только из цифр.
     """
     if models.User.objects.filter(email=user.email):
         return 400, {'codes': ['email_already_use']}
@@ -53,14 +53,19 @@ def register(request, user: schemas.Registration):
 
 @router.get(
     '/',
-    response=schemas.Token,
+    response=schemas.SignIn,
     auth=AuthWithEmailAndPassword(),
     tags=['Работа с пользователем'],
     summary='Авторизация',
     operation_id='login'
 )
 def login(request):
-    return 200, {'token': request.auth.token}
+    return 200, {
+        'token': request.auth.token,
+        'full_name': request.auth.full_name,
+        'address': request.auth.address,
+        'email': request.auth.email
+    }
 
 
 @router.put(
