@@ -13,6 +13,13 @@ class Token(Schema):
     token: str
 
 
+class SignIn(Schema):
+    token: str
+    full_name: str
+    address: str
+    email: str
+
+
 class Error(Schema):
     """
     **email_already_use**: на данную почту уже зарегистрирован аккаунт;
