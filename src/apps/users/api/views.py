@@ -11,7 +11,7 @@ logging.basicConfig(level=logging.DEBUG)
 @router.post(
     '/',
     response={
-        200: schemas.Token, 
+        200: schemas.GoodAuth,
         400: schemas.Error,
     },
     tags=['Работа с пользователем'],
@@ -48,12 +48,17 @@ def register(request, user: schemas.Registration):
     except ValidationError as error:
         return 400, {'codes': [e for e in error]}
 
-    return 200, {'token': user.token}
+    return 200, {
+        'token': user.token,
+        'email': user.email,
+        'full_name': user.full_name,
+        'address': user.address
+    }
 
 
 @router.get(
     '/',
-    response=schemas.SignIn,
+    response=schemas.GoodAuth,
     auth=AuthWithEmailAndPassword(),
     tags=['Работа с пользователем'],
     summary='Авторизация',
@@ -62,6 +67,7 @@ def register(request, user: schemas.Registration):
 def login(request):
     return 200, {
         'token': request.auth.token,
+        'email': request.auth.email,
         'full_name': request.auth.full_name,
         'address': request.auth.address
     }
@@ -70,7 +76,7 @@ def login(request):
 @router.put(
     '/',
     response={
-        200: schemas.Token,
+        200: schemas.GoodAuth,
         400: schemas.Error
     },
     auth=AuthWithToken(),
@@ -90,4 +96,6 @@ def reset_password(request, reset_password: schemas.ResetPassword):
     except ValidationError as error:
         return 400, {'codes': [e for e in error]}
 
-    return 200, {'token': user.token}
+    return 200, {
+        'token': user.token,
+    }

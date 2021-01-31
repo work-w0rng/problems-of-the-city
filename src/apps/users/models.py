@@ -24,8 +24,8 @@ class User(models.Model):
             self.full_name = convert_full_name(self.full_name)
             self.password = make_password(self.password)
             self.token = get_random_string(
-                length=10, 
-                allowed_chars=ascii_letters+digits
+                length=10,
+                allowed_chars=ascii_letters + digits
             )
         super().save(*args, **kwargs)
 

@@ -9,13 +9,10 @@ class Registration(Schema):
     password: str
 
 
-class Token(Schema):
+class GoodAuth(Schema):
     token: str
-
-
-class SignIn(Schema):
-    token: str
-    full_name: str
+    email: str = None
+    full_name: str = None
     address: str = None
 
 
