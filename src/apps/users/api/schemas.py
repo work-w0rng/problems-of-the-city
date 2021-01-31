@@ -17,7 +17,6 @@ class SignIn(Schema):
     token: str
     full_name: str
     address: str
-    email: str
 
 
 class Error(Schema):

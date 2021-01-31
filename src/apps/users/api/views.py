@@ -63,8 +63,7 @@ def login(request):
     return 200, {
         'token': request.auth.token,
         'full_name': request.auth.full_name,
-        'address': request.auth.address,
-        'email': request.auth.email
+        'address': request.auth.address
     }
 
 
