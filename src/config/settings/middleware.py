@@ -7,7 +7,8 @@ def simple_middleware(get_response):
             return get_response(request)
         print('--------------------')
         tmp = getattr(request, '_body', request.body)
-        tmp = loads(tmp)
+        if tmp:
+            tmp = loads(tmp)
         print(f'{request.method} запрос {request.path}:', tmp)
         response = get_response(request)
         print('---------')
