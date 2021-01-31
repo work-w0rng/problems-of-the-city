@@ -16,7 +16,7 @@ class Token(Schema):
 class SignIn(Schema):
     token: str
     full_name: str
-    address: str
+    address: str = None
 
 
 class Error(Schema):
