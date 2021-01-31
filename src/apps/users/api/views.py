@@ -28,12 +28,11 @@ def register(request, user: schemas.Registration):
 
     Поле **email** должно иметь корректный email.
 
-    Пароль, содержащийся в поле **password** должен соотсветсвовать требованиям безопастности:
+    Пароль, содержащийся в поле **password** должен соответствовать требованиям безопастности:
 
         - иметь минимум 8 символов;
         - состоять из цифр и букв.
     """
-    logging.info(f'Поступил запрос: {request._body}')
     if models.User.objects.filter(email=user.email):
         return 400, {'codes': ['email_already_use']}
 
@@ -61,7 +60,6 @@ def register(request, user: schemas.Registration):
     operation_id='login'
 )
 def login(request):
-    logging.info(f'Поступил запрос: {request._body}')
     return 200, {'token': request.auth.token}
 
 
@@ -77,7 +75,6 @@ def login(request):
     operation_id='reset_password'
 )
 def reset_password(request, reset_password: schemas.ResetPassword):
-    logging.info(f'Поступил запрос: {request._body}')
     user = request.auth
 
     if not user.check_password(reset_password.old_password):
